@@ -25,7 +25,7 @@ fonts.firaCodeCustom = {
 
 `withFeatures` - List of OpenType features to enable. Optional. See https://github.com/tonsky/FiraCode/wiki/How-to-enable-stylistic-sets for the features available. Any program that uses the built font will use the selected features (ligatures still dependent on ligature support by program)
 
-`fontFamilyName` - Name used in fontconfig to identify the font. Optional
+`fontFamilyName` - Name used in fontconfig to identify the font. Optional. Defaults to "features" which appends the chosen features onto the name.
 
 
 The font will be installed and available just as any other font in the system.
