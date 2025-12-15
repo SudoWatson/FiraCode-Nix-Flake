@@ -19,16 +19,16 @@ stdenv.mkDerivation {
   version = "6.2";
 
   src = fetchFromGitHub {
-    owner = "tonsky";
-    repo  = "FiraCode";
+    owner  = "tonsky";
+    repo   = "FiraCode";
     # rev   = "4a42ee8";
-    rev   = "6ec202a";  # The last commit that builds. Later commits suffer from a mac specific sed error I think
+    rev    = "6ec202a";  # The last commit that builds. Later commits suffer from a mac specific sed error I think
     sha256 = "sha256-lyAdC8xsz0mkjiO5mmYjvFc3KevL0M9cDKRiK0ly+1o=";
   };
 
   nativeBuildInputs = [
     git
-    (python3.withPackages (ps: [
+    (python3.withPackages (ps: [  # TODO: Some of these are not needed
       ps.fonttools
       ps.fontmake
       ps.glyphslib
@@ -37,18 +37,16 @@ stdenv.mkDerivation {
       ps.afdko
       ps.gftools
     ]))
-    # fontforge
     ttfautohint
     brotli
     woff2
     pkgs.haskellPackages.sfnt2woff
   ];
 
-  # This is the key line
   postPatch = ''
     patchShebangs script
 
-    substituteInPlace script/build.sh \
+    substituteInPlace script/build.sh \  # TODO: Is this still needed? Or is this fixed elsewhere?
     --replace "sed -i \'\'" "sed -i"
   '';
 
@@ -73,4 +71,10 @@ stdenv.mkDerivation {
     cp distr/ttf/*/*.ttf $out/share/fonts/truetype/
     cp distr/otf/*/*.otf $out/share/fonts/opentype/
   '';
+
+  meta = with lib; {
+    description = "Fira Code built with selected OpenType features";
+    homepage = "https://github.com/tonsky/FiraCode";
+    platforms = platforms.linux;
+  };
 }
