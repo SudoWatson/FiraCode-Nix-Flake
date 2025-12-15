@@ -2,6 +2,9 @@
 
 This flake allows you to make a **custom build of Fira Code** easily in your NixOS config to bake OpenType features directly into the font.
 
+> [!NOTE]
+> This is my first Nix Flake. There may be issues with results, performance, or other. If you notice any problems, please open an issue and feel free to help in anyway.
+
 ---
 
 ## Features
