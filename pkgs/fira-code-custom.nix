@@ -9,6 +9,7 @@
 , git
 , pkgs
 , withFeatures ? [ ]
+, fontFamilyName ? "features"
 }:
 
 let
@@ -63,7 +64,7 @@ stdenv.mkDerivation {
     export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 
     ./script/build.sh \
-      -n "features" \
+      -n "${fontFamilyName}" \
       ${lib.optionalString (withFeatures != []) "-f \"${featureList}\""}
   '';
 
