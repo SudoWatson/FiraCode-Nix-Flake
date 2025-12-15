@@ -46,7 +46,8 @@ stdenv.mkDerivation {
   postPatch = ''
     patchShebangs script
 
-    substituteInPlace script/build.sh \  # TODO: Is this still needed? Or is this fixed elsewhere?
+    # TODO: Is this still needed? Or is this fixed elsewhere?
+    substituteInPlace script/build.sh \
     --replace "sed -i \'\'" "sed -i"
   '';
 
