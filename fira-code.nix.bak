@@ -1,0 +1,91 @@
+{ config, lib, pkgs, ... }:
+
+with lib;
+
+let
+  firaCodeCustom = {
+    features ? [ ],
+    familyName ? "Fira Code",
+    weights ? [ "Regular" "Bold" ],
+  }:
+    pkgs.stdenv.mkDerivation {
+      pname = "fira-code-custom";
+      version = "6.2";
+
+      src = pkgs.fetchurl {
+        url = "https://github.com/tonsky/FiraCode/archive/refs/tags/6.2.tar.gz";
+        sha256 = "0di7asfipr3jmrrr6kwzyssh3m3kpkka42lpd4s0drd59vf3rk76";
+      };
+
+      sourceRoot = "FiraCode-6.2";
+
+      nativeBuildInputs = [
+        pkgs.python313
+        pkgs.python313Packages.setuptools
+        pkgs.pkg-config
+        pkgs.zlib
+        pkgs.ttfautohint
+        pkgs.woff2
+      ];
+
+      buildInputs = [
+        pkgs.python313
+        pkgs.python313Packages.setuptools
+        pkgs.python313Packages.pycairo
+        pkgs.python313Packages.requests
+        pkgs.python313Packages.idna
+        pkgs.python313Packages.urllib3
+        pkgs.python313Packages.fontmake
+        pkgs.python313Packages.fontbakery
+        # gftools may need to be fetched separately if not packaged
+      ];
+
+      # Patch shebangs
+      patchPhase = ''
+        patchShebangs ./script/
+      '';
+
+
+      buildPhase = ''
+        chmod +x ./script/bootstrap_linux.sh ./script/build.sh
+        bash ./script/build.sh \
+          --features "${builtins.concatStringsSep "," features}" \
+          --family-name "${familyName}" \
+          --weights "${builtins.concatStringsSep "," weights}"
+      '';
+
+      installPhase = ''
+        mkdir -p $out/share/fonts
+        cp ../distr/ttf/*.ttf $out/share/fonts/
+      '';
+    };
+in
+{
+  options.fonts.fira-code = {
+    enable = mkEnableOption "Enable custom Fira Code built with styled-in features";
+    features = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      example = [ "ss01" "cv02" ];
+    };
+    familyName = mkOption {
+      type = types.str;
+      default = "Fira Code";
+    };
+    weights = mkOption {
+      type = types.listOf types.str;
+      default = [ "Regular" "Bold" ];
+    };
+  };
+
+  config = mkIf config.fonts.fira-code.enable {
+    home.packages = [
+      (firaCodeCustom {
+        features = config.fonts.fira-code.features;
+        familyName = config.fonts.fira-code.familyName;
+        weights = config.fonts.fira-code.weights;
+      })
+    ];
+  };
+}
+
