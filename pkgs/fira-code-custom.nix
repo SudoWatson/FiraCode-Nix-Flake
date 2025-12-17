@@ -27,7 +27,7 @@ stdenv.mkDerivation {
     sha256 = "sha256-lyAdC8xsz0mkjiO5mmYjvFc3KevL0M9cDKRiK0ly+1o=";
   };
 
-  buildInputs = [
+  nativeBuildInputs = [
     git
     (python3.withPackages (ps: [  # TODO: Some of these are not needed
       ps.fonttools
