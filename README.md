@@ -16,8 +16,23 @@ This flake allows you to make a **custom build of Fira Code** easily in your Nix
 ---
 
 ## Usage (NixOS)
+Add flake input
+```nix
+inputs = {
+  fira-code-flake.url = "github:SudoWatson/FiraCode-Nix-Flake"; 
+};
+```
 
+Add flake module
+```nix
+nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+  modules = [
+    fira-code-flake.nixosModules.firaCodeCustom
+  ];
+};
+```
 
+Then in you NixOS configuration
 ```nix
 fonts.firaCodeCustom = {
   enable = true;
@@ -31,4 +46,4 @@ fonts.firaCodeCustom = {
 `fontFamilyName` - Name used in fontconfig to identify the font. Optional. Defaults to "features" which appends the chosen features onto the name.
 
 
-The font will be installed and available just as any other font in the system.
+The font will be installed and available just as any other font in your system.
