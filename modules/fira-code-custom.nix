@@ -13,6 +13,13 @@ in {
       description = "List of OpenType features to bake into Fira Code.";
     };
 
+    fontWeights = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      example = [ "Regular" "Bold" ];
+      description = "List of font weights to create. By default creates all weights.";
+    };
+
     fontFamilyName = lib.mkOption {
       type = lib.types.str;
       default = "features";

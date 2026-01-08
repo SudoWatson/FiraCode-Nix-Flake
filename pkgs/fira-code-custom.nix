@@ -9,11 +9,14 @@
 , git
 , pkgs
 , withFeatures ? [ ]
+, fontWeights ? [ ]
 , fontFamilyName ? "features"
 }:
 
 let
   featureList = lib.concatStringsSep "," withFeatures;
+  weightList = lib.concatStringsSep "," fontWeights;
+
 in
 stdenv.mkDerivation {
   pname = "fira-code-custom";
@@ -47,7 +50,7 @@ stdenv.mkDerivation {
   postPatch = ''
     patchShebangs script
 
-    # TODO: Is this still needed? Or is this fixed elsewhere?
+    # TODO: Is this still needed? Or is this fixed without the mac sed error above?
     substituteInPlace script/build.sh \
     --replace "sed -i \'\'" "sed -i"
   '';
@@ -65,7 +68,8 @@ stdenv.mkDerivation {
 
     ./script/build.sh \
       -n "${fontFamilyName}" \
-      ${lib.optionalString (withFeatures != []) "-f \"${featureList}\""}
+      ${lib.optionalString (withFeatures != []) "-f \"${featureList}\"\\"}
+      ${lib.optionalString (fontWeights != []) "-w \"${weightList}\""}
   '';
 
   installPhase = ''
