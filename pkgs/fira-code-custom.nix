@@ -66,6 +66,8 @@ stdenv.mkDerivation {
     # Make Google Font Tools use Python version of something. Takes longer to build but doesn't really take that much longer compared to not building.
     export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 
+    echo ${weightList}
+
     ./script/build.sh \
       -n "${fontFamilyName}" \
       ${lib.optionalString (withFeatures != []) "-f \"${featureList}\"\\"}
