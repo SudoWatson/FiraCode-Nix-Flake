@@ -32,6 +32,7 @@ in {
     fonts.packages = [
       (pkgs.callPackage ../pkgs/fira-code-custom.nix {
         withFeatures = cfg.withFeatures;
+        fontWeights = cfg.fontWeights;
         fontFamilyName = cfg.fontFamilyName;
       })
     ];
