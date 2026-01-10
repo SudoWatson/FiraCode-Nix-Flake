@@ -32,16 +32,19 @@ nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
 };
 ```
 
-Then in you NixOS configuration
+Then in your NixOS configuration
 ```nix
 fonts.firaCodeCustom = {
   enable = true;
   withFeatures = [ "ss01" "cv14" "zero" ];
+  fontWeights = [ "Regular" "Bold" ];
   fontFamilyName = "Fira Code Custom";
 };
 ```
 
 `withFeatures` - List of OpenType features to enable. Optional. See https://github.com/tonsky/FiraCode/wiki/How-to-enable-stylistic-sets for the features available. Any program that uses the built font will use the selected features (ligatures still dependent on ligature support by program)
+
+`fontWeights` - List of font weights to create for. By default, all weights are created.
 
 `fontFamilyName` - Name used in fontconfig to identify the font. Optional. Defaults to "features" which appends the chosen features onto the name.
 
